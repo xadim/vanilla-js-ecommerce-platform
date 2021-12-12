@@ -11,7 +11,7 @@ let Product = {
     const { count, rate } = rating;
 
     return /*html*/ `
-            <section class="text-gray-700 body-font overflow-hidden bg-white">
+            <section class="text-gray-700 body-font overflow-hidden bg-white flex justify-center items-center min-height-70">
                 <div class="container px-5 py-24 mx-auto">
                     <div class="lg:w-4/5 mx-auto flex flex-wrap">
                         <img alt="ecommerce" class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200" src="${image}">
@@ -56,22 +56,22 @@ let Product = {
                             </div>
                             <p class="leading-relaxed">${description}</p>
                             <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
-                            <div class="flex ml-6 items-center">
-                                <span class="mr-3">Size</span>
-                                <div class="relative">
-                                <select class="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-green-500 text-base pl-3 pr-10">
-                                    <option>SM</option>
-                                    <option>M</option>
-                                    <option>L</option>
-                                    <option>XL</option>
-                                </select>
-                                <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
-                                    <path d="M6 9l6 6 6-6"></path>
-                                    </svg>
-                                </span>
+                                <div class="flex ml-6 items-center">
+                                    <span class="mr-3">Size</span>
+                                    <div class="relative">
+                                        <select class="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-green-500 text-base pl-3 pr-10">
+                                            <option>SM</option>
+                                            <option>M</option>
+                                            <option>L</option>
+                                            <option>XL</option>
+                                        </select>
+                                        <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
+                                            <path d="M6 9l6 6 6-6"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                             <div class="flex productWrapper">
                                 <span class="title-font font-medium text-2xl text-gray-900">$${price}</span>
@@ -98,14 +98,13 @@ let Product = {
 
         const add = async () => {
             const cart = {
-                userId: 4,
                 date: Date.now(),
                 product: { productId: Utils.parseRequestURL().id, quantity: 1 },
             };
             const response = addToCart(cart);
             console.log("Response:", response);
             if (response.length > 0) {
-                ShowAlert("The item has been added.", "green");
+                ShowAlert("The item has been added.", "green", "absolute");
             }
         };
   },

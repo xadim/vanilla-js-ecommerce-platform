@@ -1,9 +1,17 @@
 import ShowAlert from "../../services/ShowAlert.js";
+import registerUser from "../../api/registerUser.js";
+import UUID from "../../services/UUID.js";
+import getUser from "../../api/getUser.js";
 
 const Register = {
   render: async () => {
+    const user = getUser() !== null ? getUser() : [];
+    if (user.id) {
+      window.location.href = "/#/";
+    }
+
     return `
-            <div class="bg-gray-lighter min-h-screen flex flex-col">
+            <div class="bg-gray-lighter flex justify-center items-center min-height-70">
               <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                   <div class="bg-green-600 px-6 py-8 rounded shadow-md text-gray-900 w-full productWrapper">
                       <h1 class="mb-8 text-3xl text-center text-white">Sign up</h1>
@@ -79,10 +87,28 @@ const Register = {
         ) {
           ShowAlert(`The fields cannot be empty`, "red");
         } else {
-          ShowAlert(
-            `User with email ${email.value} was successfully submitted!`,
-            "green"
-          );
+          const user = {
+            id: UUID(),
+            email: email.value,
+            fullname: fullname.value,
+            password: pass.value
+          };
+          const response = registerUser(user);
+          console.log(response);
+          if (response.id) {
+            ShowAlert(
+              `User with email ${email.value} was successfully submitted!`,
+              "green"
+            );
+            const logUserIn = document.querySelector(".login");
+            logUserIn.setAttribute("href", "");
+            logUserIn.classList.remove("login");
+            logUserIn.classList.add("logout");
+            logUserIn.textContent = "Sign Out";
+            setTimeout(() => (window.location.href = "/#/"), 3100);
+          } else {
+            ShowAlert(`${response}`, "red");
+          }
         }
       });
   },

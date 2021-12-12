@@ -1,11 +1,13 @@
 import CartItems from "./../../services/CartItems.js";
 import Currency from "./../../services/Currency.js";
 import EmptyCart from "./../../services/EmptyCart.js";
-
+import getUser from "../../api/getUser.js";
+import placeOrder from "../../api/placeOrder.js";
 
 const OrderConfirmation = {
   render: async () => {
     const products = await CartItems();
+    const user = getUser() !== null ? getUser() : [];
     const total = products.total;
     const today = new Date();
     const date =
@@ -18,7 +20,7 @@ const OrderConfirmation = {
             <div class="h-96 align-middle content-center bg-white rounded-3xl pb-4 max-w-md place-self-center m-auto">
                 <div class="pt-8 pr-10 pl-10 text-center">
                     <h1 class="text-2xl font-bold mb-4 text-dark-blue">Order Summary</h1>
-                    <p class="text-desaturated-blue">Thank you for your valued business. We value your trust and confidence in us and sincerely appreciate you!
+                    <p class="text-desaturated-blue">Thank you ${user.fullname} for your valued business. We value your trust and confidence in us and sincerely appreciate you!
                     </p>
                 </div>
                 <div class="bg-gray-50 p-6 m-6 mb-10 rounded-2xl flex justify-between">
@@ -41,6 +43,7 @@ const OrderConfirmation = {
         `;
   },
   after_render: async () => {
+      placeOrder();
       EmptyCart();
   },
 };

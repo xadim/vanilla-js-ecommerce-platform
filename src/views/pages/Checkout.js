@@ -1,11 +1,13 @@
-import CartItems from "./../../services/CartItems.js"
+import CartItems from "./../../services/CartItems.js";
+import getUser from "../../api/getUser.js";
 
 let Checkout = {
   render: async () => {
     const products = await CartItems();
     const total = products.total;
+    
     return /*html*/ `
-        <div class="">
+        <div class="flex justify-center items-center min-height-70">
             <div class="py-12">
                 <div class="max-w-md mx-auto bg-gray-100 shadow-lg rounded-lg md:max-w-5xl">
                     <div class="md:flex ">
@@ -49,7 +51,7 @@ let Checkout = {
                                             <div class="grid grid-cols-2 gap-2"> <input type="text" class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4" placeholder="mm"> <input type="text" class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4" placeholder="yyyy"> </div>
                                         </div>
                                         <div class=""> <label class="text-xs text-gray-400">CVV</label> <input type="text" class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4" placeholder="XXX"> </div>
-                                    </div><a href="/#/order-confirmation"><button class="h-12 w-full bg-green-500 rounded focus:outline-none text-white hover:bg-green-600">Check Out</button></a> 
+                                    </div><a href="" id="place-order"><button class="h-12 w-full bg-green-500 rounded focus:outline-none text-white hover:bg-green-600">Check Out</button></a> 
                                 </div>
                             </div>
                         </div>
@@ -60,6 +62,16 @@ let Checkout = {
     `;
   },
   after_render: async () => {
+      const placeOrder = document.querySelector("#place-order");
+      placeOrder.addEventListener("click", (event) => {
+        event.preventDefault();
+        const user = getUser() !== null ? getUser() : [];
+        if (typeof user.id !== "undefined") {
+          window.location.href = "/#/order-confirmation";
+        } else {
+          window.location.href = "/#/register";
+        }
+      });
   },
 };
 

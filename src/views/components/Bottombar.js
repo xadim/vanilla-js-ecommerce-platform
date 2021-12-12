@@ -1,5 +1,5 @@
-let Bottombar = {
-    render: async () => {
+const Bottombar = {
+    render: () => {
         const today = new Date();
         const date = today.getFullYear();
         const view = `
@@ -17,7 +17,7 @@ let Bottombar = {
         `;
         return view
     },
-    after_render: async () => { }
+    after_render: () => { }
 }
 
 export default Bottombar;

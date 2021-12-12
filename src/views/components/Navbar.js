@@ -1,11 +1,17 @@
 import getCategories from "../../api/getCategories.js";
 import getCartItems from "./../../services/CartItems.js";
+import getUser from "../../api/getUser.js";
+import logout from "../../api/logout.js";
+import LoginBtn from "./LoginBtn.js";
+import LogoutBtn from "./LogoutBtn.js";
+import getOrders from "../../api/getOrders.js"
 
 let Navbar = {
   render: async () => {
     const categories = await getCategories();
     const cartItems = await getCartItems();
-    let view = /*html*/ `
+    const user = getUser() !== null ? getUser() : [];
+    let view = `
              <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
             <div class="flex justify-start lg:w-0 lg:flex-1">
@@ -45,16 +51,33 @@ let Navbar = {
                     </span>
                   </a>
                 </li>
-                <a href="/#/register" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700">
-                Sign Up
-                </a>
+                ${(user.id) ? LogoutBtn()
+                : LoginBtn()}
             </div>
             </div>
         </div>
         `;
     return view;
   },
-  after_render: async () => {},
+  after_render: async () => {
+    if (document.querySelector(".logout")) {
+      const logUserOut = document.querySelector(".logout");
+      logUserOut.addEventListener("click", (event) => {
+        event.preventDefault();
+        let user = getUser() !== null ? getUser() : [];
+        if (typeof user.id !== "undefined") {
+          logout();
+          logUserOut.classList.remove("logout");
+          logUserOut.classList.add("login");
+          logUserOut.setAttribute("href", "/#/register");
+          logUserOut.textContent = "Sign In";
+          user = [];
+        } else {
+          window.location.href = "/#/register";
+        }
+      });
+    }
+  }
 };
 
 export default Navbar;
